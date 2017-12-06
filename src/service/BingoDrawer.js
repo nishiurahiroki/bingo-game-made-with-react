@@ -1,6 +1,3 @@
-import React from 'react'
-
-
 export default class BingoDrawer {
   constructor(props) {
     this.bingoNumbers = this._createBingoNumbers(props)
