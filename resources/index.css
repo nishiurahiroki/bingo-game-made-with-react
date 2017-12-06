@@ -1,0 +1,95 @@
+.main {
+  text-align: center;
+}
+
+.results {
+  text-align: center;
+  margin-top: 3vh;
+}
+
+.circle {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  flex-flow: column wrap;
+  vertical-align: top;
+}
+.big {
+  width: 320px;
+  height: 320px;
+}
+.char-big {
+  font-size: 12em;
+  line-height: 2em;
+}
+.small {
+  width: 70px;
+  height: 70px;
+  margin : 2px;
+}
+.char-small {
+  font-size: 3.0em;
+  line-height: 1.0em;
+}
+
+.skyblue {
+  color: #fff;
+  border: 4px solid skyblue;
+  background: skyblue;
+}
+.skyblue-skeleton {
+  color: skyblue;
+  border: 4px solid skyblue;
+}
+
+
+button {
+  margin: 0 20px 40px;
+  padding: 0.7em 1.6em;
+  border: none;
+  box-sizing:border-box;
+  width:200px;
+  display: inline-block;
+  font-size: 170%;
+  position: relative;
+  cursor: pointer;
+}
+button::before,
+button::after {
+  box-sizing:border-box;
+}
+
+.button-bingo {
+  border:3px solid rgb(147,162,0);
+  background-color: rgba(147,162,0,1);
+  color: #fff;
+  transition: .6s all;
+  position: absolute;
+  margin-left: 68vw;
+  margin-top: 19vh;
+}
+.button-bingo:hover {
+  border:3px solid rgb(147,162,0);
+  background-color: rgba(147,162,0,.0);
+  color:  rgba(147,162,0,1);
+}
+
+.button-clear {
+  border: 3px solid rgb(238,139,103);
+  background-color: rgb(238,139,103);
+  color: #fff;
+  transition: .6s all;
+  position: absolute;
+  margin-left: 1.5vw;
+  margin-top: 2vh;
+  width:120px;
+  display: inline-block;
+  font-size: 140%;
+  padding: 0.1em 0.8em;
+}
+.button-clear:hover {
+  border:3px solid rgb(238,139,103);
+  background-color: rgba(238,139,103,.0);
+  color:  rgba(238,139,103,1);
+}
