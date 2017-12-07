@@ -43,11 +43,9 @@ class BingoGame extends React.Component {
   }
 
   componentDidUpdate() {
-    const doButton = this.state.nowDrawing ?
-                      <DoButton label="stop" onClick={::this.finishDrawing} /> :
-                      <DoButton label="start" onClick={::this.startDrawing} />
-
-    this.state.doButton = doButton
+    this.state.doButton = this.state.nowDrawing ?
+                            <DoButton label="stop" onClick={::this.finishDrawing} /> :
+                            <DoButton label="start" onClick={::this.startDrawing} />
   }
 
   isFinished() {
@@ -64,7 +62,7 @@ class BingoGame extends React.Component {
     }
 
     this.state.nowDrawing = setInterval(() => {
-      const randomNumber = Math.floor( Math.random() * (99 + 1 - 1) ) + 1
+      const randomNumber = Math.floor( Math.random() * (BINGO_MAX_NUMBER + BINGO_MIN_NUMBER - 1) ) + BINGO_MIN_NUMBER
       this.setState({
         currentNumber : <BingoNumber size="big" isHit={true} value={randomNumber}/>
       })
