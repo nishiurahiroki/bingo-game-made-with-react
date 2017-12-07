@@ -1,7 +1,6 @@
 export default class BingoDrawer {
   constructor(props) {
     this.bingoNumbers = this._createBingoNumbers(props)
-    console.log(this.bingoNumbers);
   }
 
   draw() {

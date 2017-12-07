@@ -10,17 +10,35 @@ import DoButton from './component/DoButton.jsx'
 const BINGO_MIN_NUMBER = 1
 const BINGO_MAX_NUMBER = 75
 
+const KEY_CODE_ENTER = 13
+
 class BingoGame extends React.Component {
   constructor() {
     super()
 
     this.state = {
-      showRandomNumber : false,
-      currentNumber : <BingoNumber size="big" isHit={true} value={1}/>,
-      nowDrawing : '',
+      currentNumber : <BingoNumber size="big" isHit={true} value={0}/>,
+      nowDrawing : false,
       doButton : <DoButton label="start" onClick={::this.startDrawing} />,
       bingoDrawer : new BingoDrawer({ min : BINGO_MIN_NUMBER, max : BINGO_MAX_NUMBER }),
       hitNumbers : []
+    }
+  }
+
+  componentWillMount() {
+    // TODO enterキー押下時の機能実装
+    // document.body.addEventListener('keydown', ::this.onKeyEnter)
+  }
+
+  onKeyEnter(e) {
+    if(KEY_CODE_ENTER !== e.keyCode) {
+      return
+    }
+
+    if(this.state.nowDrawing) {
+      this.finishDrawing()
+    } else {
+      this.startDrawing()
     }
   }
 
@@ -32,8 +50,17 @@ class BingoGame extends React.Component {
     this.state.doButton = doButton
   }
 
+  isFinished() {
+    return this.state.hitNumbers.length >= ((BINGO_MAX_NUMBER - BINGO_MIN_NUMBER) + 1)
+  }
+
   startDrawing() {
-    if(this.state.nowDrawing) {
+    if(this.state.nowDrawing) { // ボタン連打対策
+      return
+    }
+
+    if(this.isFinished()) {
+      this.resetAll()
       return
     }
 
@@ -46,20 +73,37 @@ class BingoGame extends React.Component {
   }
 
   finishDrawing() {
+    if(!this.state.nowDrawing) { // ボタン連打対策
+      return
+    }
+
     clearInterval(
       this.state.nowDrawing
     )
 
     const hitNumber = this.state.bingoDrawer.draw()
-
     const hitNumbers = this.state.hitNumbers
     hitNumbers.push(hitNumber)
 
     this.setState({
-      nowDrawing : '',
+      nowDrawing : false,
       doButton : <DoButton label="start" onClick={::this.startDrawing} />,
       currentNumber : <BingoNumber size="big" isHit={true} value={hitNumber}/>,
       hitNumbers
+    })
+  }
+
+  resetAll() {
+    clearInterval(
+      this.state.nowDrawing
+    )
+
+    this.setState({
+      currentNumber : <BingoNumber size="big" isHit={true} value={0}/>,
+      nowDrawing : false,
+      doButton : <DoButton label="start" onClick={::this.startDrawing} />,
+      bingoDrawer : new BingoDrawer({ min : BINGO_MIN_NUMBER, max : BINGO_MAX_NUMBER }),
+      hitNumbers : []
     })
   }
 
@@ -70,7 +114,9 @@ class BingoGame extends React.Component {
 
         <button
           type="button"
-          className="button-clear">
+          className="button-clear"
+          onClick={::this.resetAll}
+          >
           Clear
         </button>
 
