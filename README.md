@@ -1,2 +1,29 @@
 # bingo-game-made-with-react
-first will solod [1 to 4 issues](https://github.com/nishiurahiroki/bingo-game-made-with-react/issues)
+## What is
+#### Browser Bingo game
+
+## develop
+### must be installed
+* **nodejs**  
+(>= 8.0.x)
+* **npm**  
+(>= 5.0.x)
+
+### set up
+```sh
+npm i
+```
+
+### build
+```sh
+# build
+npm run build
+
+# build & watch
+npm run watch
+```
+
+### endpoint
+```
+./index.html
+```
