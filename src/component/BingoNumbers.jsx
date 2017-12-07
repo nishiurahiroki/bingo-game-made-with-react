@@ -6,7 +6,6 @@ import ArrayExtension from '../utils/ArrayExtension.js'
 
 export default class BingoNumbers extends React.Component {
   _showBingoNumbers({min, max, hitNumbers}) {
-
     return ArrayExtension
             .range(min, max)
             .map(number => {
