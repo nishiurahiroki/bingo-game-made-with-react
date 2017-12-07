@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from 'react-dom'
 
 import BingoNumber from './component/BingoNumber.jsx'
-import BingoResults from './component/BingoResults.jsx'
+import BingoNumbers from './component/BingoNumbers.jsx'
 import BingoDrawer from './service/BingoDrawer.js'
 
 import DoButton from './component/DoButton.jsx'
@@ -60,7 +60,6 @@ class BingoGame extends React.Component {
     }
 
     if(this.isFinished()) {
-      this.resetAll()
       return
     }
 
@@ -94,17 +93,20 @@ class BingoGame extends React.Component {
   }
 
   resetAll() {
-    clearInterval(
-      this.state.nowDrawing
-    )
+    const shouldReset = confirm('ビンゴの結果をすべてクリアします。よろしいですか?')
+    if(shouldReset) {
+      clearInterval(
+        this.state.nowDrawing
+      )
 
-    this.setState({
-      currentNumber : <BingoNumber size="big" isHit={true} value={0}/>,
-      nowDrawing : false,
-      doButton : <DoButton label="start" onClick={::this.startDrawing} />,
-      bingoDrawer : new BingoDrawer({ min : BINGO_MIN_NUMBER, max : BINGO_MAX_NUMBER }),
-      hitNumbers : []
-    })
+      this.setState({
+        currentNumber : <BingoNumber size="big" isHit={true} value={0}/>,
+        nowDrawing : false,
+        doButton : <DoButton label="start" onClick={::this.startDrawing} />,
+        bingoDrawer : new BingoDrawer({ min : BINGO_MIN_NUMBER, max : BINGO_MAX_NUMBER }),
+        hitNumbers : []
+      })
+    }
   }
 
   render() {
@@ -124,7 +126,7 @@ class BingoGame extends React.Component {
           {this.state.currentNumber}
         </div>
 
-        <BingoResults
+        <BingoNumbers
           min={BINGO_MIN_NUMBER}
           max={BINGO_MAX_NUMBER}
           hitNumbers={this.state.hitNumbers}

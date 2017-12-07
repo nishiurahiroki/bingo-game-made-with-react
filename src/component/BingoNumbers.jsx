@@ -2,14 +2,10 @@ import React from 'react'
 
 import BingoNumber from './BingoNumber.jsx'
 
-export default class BingoResults extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
+export default class BingoNumbers extends React.Component {
   _showBingoNumbers({min, max, hitNumbers}) {
     const bingoNumbers = []
-    for(let i = min;i <= max;i++) {
+    for(let i = min;i <= max;i++) { // TODO rubyのrange的なAPIどっかにないかな…
       const isHit = hitNumbers.some(hitNumber => hitNumber === i)
 
       bingoNumbers.push(
