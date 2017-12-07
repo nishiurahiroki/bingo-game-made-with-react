@@ -1,3 +1,5 @@
+import ArrayExtension from '../utils/ArrayExtension.js'
+
 export default class BingoDrawer {
   constructor(props) {
     this.bingoNumbers = this._createBingoNumbers(props)
@@ -6,7 +8,7 @@ export default class BingoDrawer {
   draw() {
     const stockNumbers = Object.keys(this.bingoNumbers)
     if(0 === stockNumbers.length) {
-      return null
+      return
     }
 
     const drawIndex = stockNumbers[Math.floor(Math.random() * stockNumbers.length)]
@@ -19,9 +21,9 @@ export default class BingoDrawer {
 
   _createBingoNumbers({min, max}) {
     const bingoNumbers = {}
-    for(let i = min;i <= max;i++) { // TODO rubyのrange的なAPIどっかにないかな…
-      bingoNumbers[i] = i
-    }
+    ArrayExtension
+      .range(min, max)
+      .forEach(number => bingoNumbers[number] = number)
     return bingoNumbers
   }
 }
