@@ -26,14 +26,14 @@ class BingoGame extends React.Component {
   }
 
   componentWillMount() {
-    // TODO enterキー押下時の機能実装
-    // document.body.addEventListener('keydown', ::this.onKeyEnter)
+    document.body.addEventListener('keydown', ::this.onKeyEnter)
   }
 
   onKeyEnter(e) {
     if(KEY_CODE_ENTER !== e.keyCode) {
       return
     }
+    document.activeElement.blur()
 
     if(this.state.nowDrawing) {
       this.finishDrawing()
@@ -53,7 +53,7 @@ class BingoGame extends React.Component {
   }
 
   startDrawing() {
-    if(this.state.nowDrawing) { // ボタン連打対策
+    if(this.state.nowDrawing) {
       return
     }
 
@@ -66,11 +66,11 @@ class BingoGame extends React.Component {
       this.setState({
         currentNumber : <BingoNumber size="big" isHit={true} value={randomNumber}/>
       })
-    }, 100)
+    }, 85)
   }
 
   finishDrawing() {
-    if(!this.state.nowDrawing) { // ボタン連打対策
+    if(!this.state.nowDrawing) {
       return
     }
 
