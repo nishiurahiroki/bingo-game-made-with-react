@@ -17,10 +17,10 @@ npm i
 ### build
 ```sh
 # build
-npm run build
+npm run build:develop
 
 # build & watch
-npm run watch
+npm run build:watch:develop
 ```
 
 ### endpoint

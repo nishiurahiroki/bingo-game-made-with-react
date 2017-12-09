@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const COMMIT_HASH = process.env.COMMIT_HASH || 'dev-environment'
 
 module.exports = {
     entry: {
@@ -6,7 +7,7 @@ module.exports = {
     },
     output: {
       path: __dirname  + '/resources',
-      filename: 'bundle.js'
+      filename: `bundle.${COMMIT_HASH}.js`
     },
     module: {
       loaders: [

@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack -d",
-    "watch": "webpack -d --watch"
+    "build:develop" : "npm run clean:bundle-files && npm run build:html:develop && webpack -d",
+    "build:html:develop" : "rm -rf ./index.html && sed -e s/{{commit-hash}}/dev-environment/g ./resources/index.html > ./index.html",
+    "build:watch:develop": "npm run build:develop && webpack -d --watch",
+    "build:production": "npm run clean:bundle-files && npm run build:html:production && COMMIT_HASH=$(git rev-parse HEAD) webpack -d",
+    "build:html:production": "rm -rf ./index.html && sed -e s/{{commit-hash}}/$(git rev-parse HEAD)/g ./resources/index.html > ./index.html",
+    "clean:bundle-files" : "rm -rf ./resources/bundle.*.js"
   },
   "author": "nishiurahiroki",
   "license": "MIT",
