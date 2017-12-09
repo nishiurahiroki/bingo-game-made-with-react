@@ -6,8 +6,8 @@ const BingoNumber = props => {
   const skeleton = props.isHit ? '' : '-skeleton'
 
   return (
-    <div className={'circle ' + size + ' skyblue' + skeleton}>
-      <div className={'char-' + size}>
+    <div className={`circle ${size} skyblue${skeleton}`}>
+      <div className={`char\-${size}`}>
         {value}
       </div>
     </div>
