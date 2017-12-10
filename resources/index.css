@@ -93,3 +93,11 @@ button::after {
   background-color: rgba(238,139,103,.0);
   color:  rgba(238,139,103,1);
 }
+
+.config-button {
+  text-decoration: none;
+  font-size : 2.3em;
+  position: fixed;
+  margin-left: 93vw;
+  margin-top: 0.1vh;
+}

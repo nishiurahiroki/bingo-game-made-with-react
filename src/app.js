@@ -6,6 +6,13 @@ import BingoNumbers from './component/BingoNumbers.jsx'
 import BingoDrawer from './service/BingoDrawer.js'
 
 import DoButton from './component/DoButton.jsx'
+import ConfigButton from './component/ConfigButton.jsx'
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
+
+import ConfigArea from './component/ConfigArea.jsx'
 
 const BINGO_MIN_NUMBER = 1
 const BINGO_MAX_NUMBER = 75
@@ -21,7 +28,14 @@ class BingoGame extends React.Component {
       nowDrawing : false,
       doButton : <DoButton label="start" onClick={::this.startDrawing} />,
       bingoDrawer : new BingoDrawer({ min : BINGO_MIN_NUMBER, max : BINGO_MAX_NUMBER }),
-      hitNumbers : []
+      hitNumbers : [],
+      isOpenConfig : false,
+      max : BINGO_MAX_NUMBER,
+      min : BINGO_MIN_NUMBER,
+      reSettingMax : BINGO_MAX_NUMBER,
+      reSettingMin : BINGO_MIN_NUMBER,
+      reSettingMaxError : '',
+      reSettingMinError : ''
     }
   }
 
@@ -49,7 +63,7 @@ class BingoGame extends React.Component {
   }
 
   isFinished() {
-    return this.state.hitNumbers.length >= ((BINGO_MAX_NUMBER - BINGO_MIN_NUMBER) + 1)
+    return this.state.hitNumbers.length >= ((this.state.max - this.state.min) + 1)
   }
 
   startDrawing() {
@@ -62,7 +76,7 @@ class BingoGame extends React.Component {
     }
 
     this.state.nowDrawing = setInterval(() => {
-      const randomNumber = Math.floor( Math.random() * (BINGO_MAX_NUMBER + BINGO_MIN_NUMBER - 1) ) + BINGO_MIN_NUMBER
+      const randomNumber = Math.floor( Math.random() * (this.state.max + this.state.min - 1) ) + this.state.min
       this.setState({
         currentNumber : <BingoNumber size="big" isHit={true} value={randomNumber}/>
       })
@@ -91,7 +105,7 @@ class BingoGame extends React.Component {
   }
 
   resetAll() {
-    const shouldReset = confirm('ビンゴの結果をすべてクリアします。よろしいですか?')
+    const shouldReset = confirm('抽選結果をすべてクリアします。よろしいですか?')
     if(shouldReset) {
       clearInterval(
         this.state.nowDrawing
@@ -101,16 +115,136 @@ class BingoGame extends React.Component {
         currentNumber : <BingoNumber size="big" isHit={true} value={0}/>,
         nowDrawing : false,
         doButton : <DoButton label="start" onClick={::this.startDrawing} />,
-        bingoDrawer : new BingoDrawer({ min : BINGO_MIN_NUMBER, max : BINGO_MAX_NUMBER }),
-        hitNumbers : []
+        bingoDrawer : new BingoDrawer({ min : this.state.min, max : this.state.max }),
+        hitNumbers : [],
+        reSettingMaxError : '',
+        reSettingMinError : ''
       })
     }
+  }
+
+  toggleConfigArea() {
+    this.setState({ isOpenConfig : !this.state.isOpenConfig })
+  }
+
+  syncValue(e) {
+    const changedState = {}
+    changedState[e.target.name] = e.target.value
+
+    this.setState(changedState)
+  }
+
+  clearConfigErrorMessage() {
+    this.setState({
+      reSettingMaxError : '',
+      reSettingMinError : ''
+    })
+  }
+
+  saveConfigAndRestart() {
+    this.clearConfigErrorMessage()
+
+    const reSettingMax = +this.state.reSettingMax
+    const reSettingMin = +this.state.reSettingMin
+
+    const validateTargets = [
+                              {
+                                target : 'min',
+                                value : reSettingMin
+                              },
+                              {
+                                target : 'max',
+                                value : reSettingMax
+                              }
+                            ]
+
+    const isNanError = ((validateTargets, _this) => { // 特に汚い…もっと綺麗に書きたい
+      let result = false
+      validateTargets.forEach(props => {
+        if(!props.value || isNaN(props.value)) {
+          const errorMessage = {}
+          errorMessage[`reSetting${props.target.charAt(0).toUpperCase() + props.target.slice(1)}Error`] = `${props.target}には1以上の半角数値を入力してください`
+          _this.setState(errorMessage)
+          result = true
+        }
+      })
+      return result
+    })(validateTargets, this)
+
+    if(isNanError) {
+      return
+    }
+
+    if(reSettingMin >= reSettingMax) {
+      this.setState({ reSettingMaxError : 'maxよりminの値が大きいです' })
+      return
+    }
+
+    clearInterval(
+      this.state.nowDrawing
+    )
+
+    this.setState({
+      currentNumber : <BingoNumber size="big" isHit={true} value={0}/>,
+      nowDrawing : false,
+      doButton : <DoButton label="start" onClick={::this.startDrawing} />,
+      bingoDrawer : new BingoDrawer({ min : reSettingMin, max : reSettingMax }),
+      hitNumbers : [],
+      max : reSettingMax,
+      min : reSettingMin,
+      isOpenConfig : !this.state.isOpenConfig,
+      reSettingMaxError : '',
+      reSettingMinError : ''
+    })
   }
 
   render() {
     return (
       <div>
         {this.state.doButton}
+
+        <ConfigButton
+          onClick={::this.toggleConfigArea}
+        />
+        <ConfigArea
+          onRequestChange={::this.toggleConfigArea}
+          open={this.state.isOpenConfig}
+        >
+          <TextField
+            hintText="Min"
+            floatingLabelText="Min"
+            style={{ marginLeft:'1vw' }}
+            defaultValue={this.state.min}
+            onChange={::this.syncValue}
+            name="reSettingMin"
+            errorText={this.state.reSettingMinError}
+            underlineShow={false} />
+          <TextField
+            hintText="Max"
+            floatingLabelText="Max"
+            style={{ marginLeft:'1vw' }}
+            defaultValue={this.state.max}
+            onChange={::this.syncValue}
+            name="reSettingMax"
+            errorText={this.state.reSettingMaxError}
+            underlineShow={false} />
+          <RaisedButton
+            label="save & reStart"
+            primary={true}
+            icon={<i className="material-icons">refresh</i>}
+            fullWidth={true}
+            onClick={::this.saveConfigAndRestart}
+          />
+          <RaisedButton
+            label="Secondary"
+            secondary={true}
+            label="close"
+            icon={<i className="material-icons">close</i>}
+            style={{ marginTop : '4.0vh' }}
+            fullWidth={true}
+            onClick={::this.toggleConfigArea}
+          />
+        </ConfigArea>
 
         <button
           type="button"
@@ -125,8 +259,8 @@ class BingoGame extends React.Component {
         </div>
 
         <BingoNumbers
-          min={BINGO_MIN_NUMBER}
-          max={BINGO_MAX_NUMBER}
+          min={this.state.min}
+          max={this.state.max}
           hitNumbers={this.state.hitNumbers}
         />
       </div>
@@ -136,6 +270,10 @@ class BingoGame extends React.Component {
 
 
 render(
-  <BingoGame />,
+  (
+    <MuiThemeProvider>
+      <BingoGame />
+    </MuiThemeProvider>
+  ),
   document.getElementById('bingo-game')
 )

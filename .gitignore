@@ -3,3 +3,4 @@ package-lock.json
 resources/bundle.*.js
 .firebaserc
 firebase.json
+index.html
