@@ -76,7 +76,7 @@ class BingoGame extends React.Component {
     }
 
     this.state.nowDrawing = setInterval(() => {
-      const randomNumber = Math.floor( Math.random() * (this.state.max + this.state.min - 1) ) + this.state.min
+      const randomNumber = Math.floor(Math.random() * (this.state.max - this.state.min + 1) + this.state.min)
       this.setState({
         currentNumber : <BingoNumber size="big" isHit={true} value={randomNumber}/>
       })
@@ -158,14 +158,15 @@ class BingoGame extends React.Component {
                               }
                             ]
 
-    const isNanError = ((validateTargets, _this) => { // 特に汚い…もっと綺麗に書きたい
+    const isNanError = ((validateTargets, _this) => {
       let result = false
       validateTargets.forEach(props => {
-        if(!props.value || isNaN(props.value)) {
+        if(!props.value || isNaN(props.value) || 0 > props.value) {
           const errorMessage = {}
           errorMessage[`reSetting${props.target.charAt(0).toUpperCase() + props.target.slice(1)}Error`] = `${props.target}には1以上の半角数値を入力してください`
           _this.setState(errorMessage)
           result = true
+          return
         }
       })
       return result
@@ -176,7 +177,7 @@ class BingoGame extends React.Component {
     }
 
     if(reSettingMin >= reSettingMax) {
-      this.setState({ reSettingMaxError : 'maxよりminの値が大きいです' })
+      this.setState({ reSettingMaxError : 'minより大きい値を入力して下さい' })
       return
     }
 
