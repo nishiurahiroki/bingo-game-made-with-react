@@ -40,7 +40,7 @@ class BingoGame extends React.Component {
   }
 
   componentWillMount() {
-    document.body.addEventListener('keydown', ::this.onKeyEnter)
+    document.body.addEventListener('keyup', ::this.onKeyEnter)
   }
 
   onKeyEnter(e) {
