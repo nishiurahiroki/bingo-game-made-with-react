@@ -40,14 +40,20 @@ class BingoGame extends React.Component {
   }
 
   componentWillMount() {
-    document.body.addEventListener('keyup', ::this.onKeyEnter)
+    document.body.addEventListener('keydown', ::this.onEnterKeyDown)
+    document.body.addEventListener('keyup', ::this.onEnterKeyUp)
   }
 
-  onKeyEnter(e) {
+  onEnterKeyDown(e) {
+    if(KEY_CODE_ENTER === e.keyCode) {
+      document.activeElement.blur()
+    }
+  }
+
+  onEnterKeyUp(e) {
     if(KEY_CODE_ENTER !== e.keyCode) {
       return
     }
-    document.activeElement.blur()
 
     if(this.state.nowDrawing) {
       this.finishDrawing()
