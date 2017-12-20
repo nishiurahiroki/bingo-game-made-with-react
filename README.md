@@ -2,6 +2,9 @@
 ## What is
 #### Browser Bingo game
 
+## Qiita
+[https://qiita.com/nishiurahiroki/items/9f57536a34f2050926ea](https://qiita.com/nishiurahiroki/items/9f57536a34f2050926ea)
+
 ## develop
 ### must be installed
 * **nodejs**  
