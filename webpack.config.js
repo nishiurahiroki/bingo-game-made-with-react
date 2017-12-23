@@ -17,7 +17,7 @@ module.exports = {
           test: /\.js[x]?$/,
           query: {
             cacheDirectory: true,
-            presets: ['react', 'es2017'],
+            presets: ['react', 'es2017', 'env'],
             plugins: ["transform-function-bind"]
           }
         }
