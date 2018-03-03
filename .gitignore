@@ -4,3 +4,5 @@ resources/bundle.*.js
 .firebaserc
 firebase.json
 index.html
+yarn-error.log
+yarn.lock

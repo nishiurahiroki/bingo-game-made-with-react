@@ -1,5 +1,11 @@
 const webpack = require('webpack');
-const COMMIT_HASH = process.env.COMMIT_HASH || 'dev-environment'
+
+const isProduction = !!process.env.COMMIT_HASH
+
+const COMMIT_HASH = isProduction ?
+                      process.env.COMMIT_HASH : 'dev-environment'
+
+const mode = isProduction ? 'production' : 'development'
 
 module.exports = {
     entry: {
@@ -10,12 +16,12 @@ module.exports = {
       filename: `bundle.${COMMIT_HASH}.js`
     },
     module: {
-      loaders: [
+      rules: [
         {
           loader: 'babel-loader',
-          exclude: /node_modules/,
+          exclude: [ /node_modules/ ],
           test: /\.js[x]?$/,
-          query: {
+          options: {
             cacheDirectory: true,
             presets: ['react', 'es2017', 'env'],
             plugins: ["transform-function-bind"]
@@ -23,5 +29,5 @@ module.exports = {
         }
       ]
     },
-    devtool: 'source-map'
+    mode
 };
