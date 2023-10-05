@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      # nvmを使用して.nvmrcからNode.jsのバージョンを読み込み、そのバージョンを使用する
+      - name: Setup Node.js version from .nvmrc
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+
       - run: 'npm run production:deploy'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
