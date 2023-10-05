@@ -12,6 +12,11 @@
 * **npm**  
 (>= 5.0.x)
 
+### set up node.js
+```sh
+nvm install
+```
+
 ### set up
 ```sh
 npm i
@@ -24,6 +29,11 @@ npm run build:develop
 
 # build & watch
 npm run build:watch:develop
+```
+
+### deploy
+```sh
+npm run deploy # use firebase
 ```
 
 ### endpoint
